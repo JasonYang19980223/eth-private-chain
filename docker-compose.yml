@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  api1:
+    image: eth-api
+    depends_on:
+      - node1
+      - eth-stats
+    volumes:
+      - /home/server/eth-api/1/.env:/home/root/eth-net-intelligence-api/.env
+
+  api2:
+    image: eth-api
+    depends_on:
+      - node2
+      - eth-stats
+    volumes:
+      - /home/server/eth-api/2/.env:/home/root/eth-net-intelligence-api/.env
+
+  node1:
+    image: geth
+    network_mode: host
+    volumes:
+      - /home/server/eth-api/genesis7414.json:/genesis7414.json
+      - /home/server/eth-api/1/run.sh:/run.sh
+    entrypoint: /run.sh
+
+  node2:
+    image: geth
+    network_mode: host
+    volumes:
+      - /home/server/eth-api/genesis7414.json:/genesis7414.json
+      - /home/server/eth-api/2/run.sh:/run.sh
+    entrypoint: /run.sh
+
+  eth-stats:
+    image: eth-stats
+    ports:
+      - 3002:3000
